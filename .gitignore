@@ -1,0 +1,33 @@
+.env
+node_modules
+
+
+dist
+build   
+
+*.o
+*.log
+*.tmp   
+.DS_Store
+
+*.exe
+*.out
+
+/bin/
+
+_obj
+_test
+vendor/
+
+# logs
+.log
+
+# Ignore the .env file which contains environment variables
+# This file should not be committed to version control for security reasons
+# Ignore the node_modules directory which contains installed dependencies
+# This directory can be regenerated using package.json and should not be committed  
+# Ignore the dist and build directories which contain compiled code
+# These directories can be regenerated and should not be committed
+# Ignore object files, log files, temporary files, and system files
+
+

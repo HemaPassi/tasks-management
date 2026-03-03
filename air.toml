@@ -1,0 +1,10 @@
+root = "."
+temp_dir = "tmp"
+
+# build configuration
+[build]
+    bin = "main"
+    cmd = "go build -o {{.Output}} {{.Input}}" 
+    exclude = ["**/tmp/**", "**/vendor/**", "**/.air.toml", "**/main.go"]
+    include = ["**/*.go"]   
+    ignore = ["**/tmp/**", "**/vendor/**", "**/.air.toml", "**/main.go"]    
