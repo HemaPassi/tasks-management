@@ -2,10 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import "./TodoList.css";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-//import { BASE_URL } from "../App";
+import { BASE_URL } from "../config"
 import { IoReload } from "react-icons/io5";
-
-const BASE_URL = import.meta.env.VITE_API_URL;
 
 
 export type Todo = {

@@ -2,8 +2,7 @@ import {useState, useRef, useEffect } from 'react'
 //import { BASE_URL } from '../App'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { IoReload } from 'react-icons/io5'
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import { BASE_URL } from "../config"
 
 
 export default function TodoForm() {
