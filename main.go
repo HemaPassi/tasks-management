@@ -41,7 +41,7 @@ func main() {
 
 	// Only load .env locally
 	if os.Getenv("RENDER") == "" {
-		if err := godotenv.Load(".env"); err != nil {
+		if err := godotenv.Load(".env.development"); err != nil {
 			log.Println("No .env file found, relying on system environment variables")
 		}
 	}
@@ -80,6 +80,7 @@ func main() {
 	})
 
 	PORT := os.Getenv("PORT")
+	fmt.Println("port ", PORT)
 	if PORT == "" {
 		PORT = "5000"
 	}
