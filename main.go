@@ -71,6 +71,8 @@ func main() {
 	app.Patch("/api/todos/:id", updateTodo)
 	app.Delete("/api/todos/:id", deleteTodo)
 
+	app.Static("/", "./build")
+
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "5000"
