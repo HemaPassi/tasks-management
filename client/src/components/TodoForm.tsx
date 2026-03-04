@@ -6,6 +6,7 @@ import { BASE_URL } from "../config"
 
 
 export default function TodoForm() {
+    console.log("BASE_URL:", BASE_URL);
     const [newTodo, setNewTodo] = useState("")
     const [isPending, setIsPending] = useState(false)
     const taskName = useRef<HTMLInputElement>(null)

@@ -28,7 +28,7 @@ func main() {
 
 	// Configure CORS
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:5173, https://tasks-management-hfy0.onrender.com",
+		AllowOrigins:     "http://localhost:5173, http://localhost:5174, https://tasks-management-hfy0.onrender.com",
 		AllowMethods:     "GET,POST,PUT,PATCH,DELETE,OPTIONS",
 		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
 		AllowCredentials: true,
