@@ -34,9 +34,16 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file", err)
+	// err := godotenv.Load(".env")
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file", err)
+	// }
+
+	// Only load .env locally
+	if os.Getenv("RENDER") == "" {
+		if err := godotenv.Load(".env"); err != nil {
+			log.Println("No .env file found, relying on system environment variables")
+		}
 	}
 
 	MONGODB_URI := os.Getenv("MONGODB_URI")
