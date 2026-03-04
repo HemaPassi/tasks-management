@@ -17,6 +17,12 @@ RUN go build -tags netgo -ldflags "-s -w" -o app .
 # Stage 3: Final runtime image
 FROM debian:bookworm-slim
 WORKDIR /app
+
+# Install CA certificates so TLS works
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+
 COPY --from=backend-builder /app/app .
 COPY --from=backend-builder /app/dist ./dist
+
 CMD ["./app"]
+
