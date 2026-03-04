@@ -1,4 +1,4 @@
-import {useState, useRef } from 'react'
+import {useState, useRef, useEffect } from 'react'
 import { BASE_URL } from '../App'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { IoReload } from 'react-icons/io5'
@@ -7,6 +7,13 @@ export default function TodoForm() {
     const [newTodo, setNewTodo] = useState("")
     const [isPending, setIsPending] = useState(false)
     const taskName = useRef<HTMLInputElement>(null)
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    
+    useEffect(() => { 
+      inputRef.current?.focus();
+    }, []);
+
 
     const queryClient = useQueryClient()
 
@@ -51,7 +58,7 @@ export default function TodoForm() {
         <div>
             <h2>Add Task</h2>
             <form onSubmit={(e) => {e.preventDefault(); createTodo(newTodo); }}>
-                <input type="text" name="taskName" value={newTodo} placeholder="Task Name" onChange={(e) => setNewTodo(e.target.value)} ref={(input) => input && input.focus()} />
+                <input type="text" name="taskName" value={newTodo} placeholder="Task Name" onChange={(e) => setNewTodo(e.target.value)} ref={inputRef} />
                  {isPending ? <IoReload color="gray" size={20} className="spin" /> :  <button type="submit">Add Task</button> }
                  
             </form>

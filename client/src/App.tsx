@@ -9,8 +9,6 @@ export const BASE_URL = "http://localhost:5000/api"
 
 
 function App() {
-  //const [count, setCount] = useState(0)
-
   return (
     <div>
     <Navbar></Navbar>
