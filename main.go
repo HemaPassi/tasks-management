@@ -71,7 +71,13 @@ func main() {
 	app.Patch("/api/todos/:id", updateTodo)
 	app.Delete("/api/todos/:id", deleteTodo)
 
+	// Serve React build
 	app.Static("/", "./dist")
+
+	// Optional: catch-all route to serve index.html for React Router
+	app.Get("*", func(c *fiber.Ctx) error {
+		return c.SendFile("./dist/index.html")
+	})
 
 	PORT := os.Getenv("PORT")
 	if PORT == "" {

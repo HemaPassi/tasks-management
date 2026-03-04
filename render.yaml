@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: tasks-management
+    env: go
+    buildCommand: |
+      cd client && npm install && npm run build
+      cp -r client/dist ./dist
+      go build -o app .
+    startCommand: ./app
+    envVars:
+      - key: MONGODB_URI
+        sync: false
