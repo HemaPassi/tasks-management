@@ -1,9 +1,12 @@
 .inprogress {
-  color: orange;
+  /* color: orange; */
 }
 .completed {
-  color: green;
+  /* color: green; */
   background-color: #bfe1bf;
+}
+ul {
+    padding: 0;
 }
 li {
   display: flex;
