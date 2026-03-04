@@ -1,0 +1,33 @@
+.inprogress {
+  color: orange;
+}
+.completed {
+  color: green;
+  background-color: #bfe1bf;
+}
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 0;
+}
+.task {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.task-title {
+  font-weight: 500;
+}
+.task-status {
+  color: gray;
+  font-size: 0.9rem;
+  text-align: right;
+  padding-right: 20px;
+}
+.tools {
+  display: flex;
+  gap: 0.5em;
+}

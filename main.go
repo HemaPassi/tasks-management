@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -15,7 +16,7 @@ import (
 )
 
 type Todo struct {
-	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"` // as mongodb store data in bson format, we need to specify the bson tag for the ID field
+	ID        primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"` // as mongodb store data in bson format, we need to specify the bson tag for the ID field
 	Completed bool               `json:"completed"`
 	Body      string             `json:"body"`
 }
@@ -26,7 +27,14 @@ var collection *mongo.Collection
 
 func main() {
 	app := fiber.New()
-	//	todos := []Todo{}
+
+	// Configure CORS
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:5173",
+		AllowMethods:     "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
+		AllowCredentials: true,
+	}))
 
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -83,15 +91,14 @@ func getTodos(c *fiber.Ctx) error {
 				"error": "Error decoding todo from database",
 			})
 		}
-		//	return c.JSON(todos)
 		todos = append(todos, todo)
 	}
-	//return c.SendString("Get all todos")
 	return c.JSON(todos)
 }
 
 func createTodo(c *fiber.Ctx) error {
 	todo := new(Todo)
+
 	if err := c.BodyParser(todo); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Error parsing request body",
@@ -111,8 +118,6 @@ func createTodo(c *fiber.Ctx) error {
 	}
 
 	todo.ID = insertResult.InsertedID.(primitive.ObjectID) // type assertion to convert the inserted ID to int
-
-	//	return c.JSON(todos)
 	return c.Status(201).JSON(todo)
 }
 
@@ -125,10 +130,17 @@ func updateTodo(c *fiber.Ctx) error {
 			"error": "Invalid todo ID",
 		})
 	}
+	var todo Todo
+	err = collection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&todo)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "Todo not found",
+		})
+	}
 
 	filter := bson.M{"_id": objID}
 	update := bson.M{"$set": bson.M{
-		"completed": true,
+		"completed": !todo.Completed,
 	}}
 
 	_, err = collection.UpdateOne(context.Background(), filter, update)
