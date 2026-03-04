@@ -1,29 +1,22 @@
-FROM golang:1.22 AS builder
-
-# Install Node
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs
-
-WORKDIR /app
-
-# Copy frontend and build React
-COPY client ./client
+# Stage 1: Build React frontend
+FROM node:20 AS frontend-builder
 WORKDIR /app/client
-RUN npm install && npm run build
+COPY client/package*.json ./
+RUN npm install
+COPY client/ ./
+RUN npm run build
 
-# Copy Go backend
+# Stage 2: Build Go backend (use Go 1.26)
+FROM golang:1.26 AS backend-builder
 WORKDIR /app
 COPY . .
-
-# Copy React dist into Go root
-RUN cp -r client/dist ./dist
-
-# Build Go app
+# Copy React build output into Go project root
+COPY --from=frontend-builder /app/client/dist ./dist
 RUN go build -tags netgo -ldflags "-s -w" -o app .
 
-# Final stage
+# Stage 3: Final runtime image
 FROM debian:bookworm-slim
 WORKDIR /app
-COPY --from=builder /app/app .
-COPY --from=builder /app/dist ./dist
+COPY --from=backend-builder /app/app .
+COPY --from=backend-builder /app/dist ./dist
 CMD ["./app"]
